@@ -1,9 +1,9 @@
-package PiADCs
+package piadcs
 
 import (
 	"log"
 
-	adc "PiADCs/ads126x"
+	adc "piadcs/ads126x"
 
 	spi "periph.io/x/periph/conn/spi"
 )

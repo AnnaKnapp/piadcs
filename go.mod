@@ -1,4 +1,4 @@
-module PiADCs
+module github.com/AnnaKnapp/piadcs
 
 go 1.16
 
