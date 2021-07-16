@@ -75,12 +75,15 @@ func main() {
 	}
 
 	// In this example we are using the raspberry Pi's SPI0. Other SPI buses would work but this corresponds the example schematic provided. The speed specified here is 6MHz. Slower will also work as long as the data rate isn't too high. I have not had success with higher speeds but it may be possible with some extra steps
-	spi0, err := port.Connect(physic.KiloHertz*6000, spi.Mode1, 8)
+	spi0, err := port.Connect(physic.KiloHertz*600, spi.Mode1, 8)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	//The following sets the values that we want to write to the register. All register options are defined in the constants.go file. In this example we set the interface register such that the status byte is enabled and the checksum byte is enabled in checksum mode.
+	Power := piadcs.NewRegister("Power", adc.POWER_address)
+	Power.Setregister([]byte{adc.POWER_vbias_enabled})
+
 	Interface := piadcs.NewRegister("Interface", adc.INTERFACE_address)
 	Interface.Setregister([]byte{adc.INTERFACE_status_enabled, adc.INTERFACE_crc_checksum})
 
@@ -90,20 +93,23 @@ func main() {
 
 	//This sets the ADC filter to sync4 mode (defined in the datasheet)
 	Mode1 := piadcs.NewRegister("Mode1", adc.MODE1_address)
-	Mode1.Setregister([]byte{adc.MODE1_filter_sinc4})
+	Mode1.Setregister([]byte{adc.MODE1_filter_FIR})
 
 	//This sets the gain to 1v/v and the data rate to 400 samples per second
 	Mode2 := piadcs.NewRegister("Mode2", adc.MODE2_address)
-	Mode2.Setregister([]byte{adc.MODE2_GAIN_1, adc.MODE2_DR_400})
+	Mode2.Setregister([]byte{adc.MODE2_GAIN_1, adc.MODE2_DR_20})
+
+	Inpmux := piadcs.NewRegister("INPMUX", adc.INPMUX_address)
+	Inpmux.Setregister([]byte{adc.INPMUX_muxP_AIN9, adc.INPMUX_muxN_AINCOM})
 
 	//This creates a byte slice which we will use to write the values to the registers specified. It is critical that the values listed are in order and no register is skipped. If there is a register that you don't want to change the value of you still need to speficy it if it falls between two others that you want to change. You can use the built in default value for this as shown in this example with Mode0. See the ADS126x datasheet section 9.5.7 for an explanation of why this is the case
-	registerdata := []byte{Interface.Setvalue, Mode0.Setvalue, Mode1.Setvalue, Mode2.Setvalue}
+	registerdata := []byte{Power.Setvalue, Interface.Setvalue, Mode0.Setvalue, Mode1.Setvalue, Mode2.Setvalue, Inpmux.Setvalue}
 
 	//This actually writes the data to the register
-	piadcs.WriteToConsecutiveRegisters(spi0, Interface.Address, registerdata)
+	piadcs.WriteToConsecutiveRegisters(spi0, Power.Address, registerdata)
 
 	//This reads the data from registers so we can check that the ADC is working and that we correctly wrote the data to the registers
-	incomingregdata := piadcs.ReadFromConsecutiveRegisters(spi0, Interface.Address, 4)
+	incomingregdata := piadcs.ReadFromConsecutiveRegisters(spi0, Power.Address, 6)
 
 	fmt.Println(incomingregdata)
 

@@ -3,7 +3,7 @@ package piadcs
 import (
 	"log"
 
-	adc "piadcs/ads126x"
+	adc "github.com/AnnaKnapp/piadcs/ads126x"
 
 	spi "periph.io/x/periph/conn/spi"
 )

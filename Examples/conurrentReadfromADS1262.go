@@ -1,5 +1,3 @@
-//This example demonstrates a way of reading data continously from the ADS1262 and takes advantage of go's support for concurrency
-
 package main
 
 import (
@@ -12,7 +10,6 @@ import (
 	"time"
 
 	"github.com/AnnaKnapp/piadcs"
-
 	adc "github.com/AnnaKnapp/piadcs/ads126x"
 
 	"periph.io/x/periph/conn/gpio"
