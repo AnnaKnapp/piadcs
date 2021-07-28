@@ -96,15 +96,15 @@ func main() {
 		log.Fatal("Failed to find powerdown pin (27)")
 	}
 	//Sets the start pin to the Rasberry Pi pin 26 (see ADS126x datasheet for what this pin does)
-	startpin := gpioreg.ByName("26")
+	startpin := gpioreg.ByName("22")
 	if startpin == nil {
-		log.Fatal("Failed to find start pin (26)")
+		log.Fatal("Failed to find start pin (22)")
 	}
 
 	//Sets the data ready pin to the Rasberry Pi pin 12 (see ADS126x datasheet for what this pin does)
-	drdypin := gpioreg.ByName("12")
+	drdypin := gpioreg.ByName("4")
 	if drdypin == nil {
-		log.Fatal("Failed to find data ready pin (12)")
+		log.Fatal("Failed to find data ready pin (4)")
 	}
 
 	//Since we will be reading the data ready pin we need to configure it as an input pin and specify which edge we will be looking for to know that new conversion data is ready to be read
