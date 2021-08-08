@@ -46,7 +46,7 @@ const (
 	POWER_vbias_disabled byte = 0b00000000
 	POWER_vbias_enabled  byte = 0b00000010
 
-	//Internal reference ebable (Enables the 2.5 V internal voltage reference. Note the IDAC and temperature sensor require the internal voltage reference.)
+	//Internal reference ebable (Enables the 2.5 V internal voltage reference. Note the IDAC and temperature sensor require the internal voltage reference.) This should always be enabled unless you are using an external reference
 	POWER_intref_disabled byte = 0b00000000
 	POWER_intref_enabled  byte = 0b00000001
 )
@@ -118,7 +118,7 @@ const (
 
 	//Sensor Bias ADC Connection (Selects the ADC to connect the sensor bias)
 	MODE1_sbADC_ADC1 byte = 0b00000000 //Sensor bias connected to ADC1 mux out (default)
-	MODE1_sbADC_ADC2 byte = 0b00000000 //Sensor bias connected to ADC2 mux out
+	MODE1_sbADC_ADC2 byte = 0b00010000 //Sensor bias connected to ADC2 mux out
 
 	//Sensor Bias Polarity Selects the sensor bias for pull-up or pull-down
 	MODE1_sbpol_pullUp   byte = 0b00000000 //Sensor bias pull-up mode (AINP pulled high, AINN pulled low) (default)

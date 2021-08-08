@@ -28,7 +28,7 @@ func Stopcommand(connection spi.Conn) {
 //funcs to write - read data, convert data, read pulse, startup, data to file
 
 //function to restart the ADS126x based on fig 159 from the datasheet
-func InitSetup(start, pwdn gpio.PinIO) {
+func Restart(start, pwdn gpio.PinIO) {
 	if err := pwdn.Out(gpio.Low); err != nil {
 		log.Fatal(err)
 	}

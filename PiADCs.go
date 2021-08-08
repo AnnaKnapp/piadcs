@@ -18,7 +18,7 @@ type Register struct {
 	Setvalue byte
 }
 
-//This function sets the register data byte according to the settings specified. The lists of all possible settings for registers are listed in the constants file for that device
+//This function sets the register data byte according to the settings specified. PLEASE make sure to list either ALL settings for a given register OR the default value. For examp if you want to change the POWER register on the ADS126x to enable vbias, make sure to also include the setting for the internal reference which is also controlled by that register. This will ensure that the registers are set exactly as you intended. The lists of all possible settings for registers are listed in the constants file for that device.
 func (reg *Register) Setregister(settings []byte) {
 	for i := range settings {
 		reg.Setvalue = settings[i] | reg.Setvalue
@@ -62,4 +62,17 @@ func ReadFromConsecutiveRegisters(connection spi.Conn, startingreg byte, numbert
 	}
 	return registerdata
 
+}
+
+//checks if the data returned from a register read matches the data that was initially sent - use this to ensure you properly set your registers
+func RegisterMatch(a, b []byte) bool {
+	if len(a) != len(b) {
+		return false
+	}
+	for i := range a {
+		if a[i] != b[i] {
+			return false
+		}
+	}
+	return true
 }

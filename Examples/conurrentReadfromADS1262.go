@@ -68,7 +68,7 @@ func main() {
 	}
 
 	//This function resets the ADC
-	adc.InitSetup(startpin, pwdnpin)
+	adc.Restart(startpin, pwdnpin)
 
 	//See periph documentation
 	port, err := spireg.Open("")
@@ -81,22 +81,21 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	//The following sets the values that we want to write to the register. All register options are defined in the constants.go file. In this example we set the interface register such that the status byte is enabled and the checksum byte is enabled in checksum mode.
 	Interface := piadcs.NewRegister("Interface", adc.INTERFACE_address)
-	Interface.Setregister([]byte{adc.INTERFACE_status_enabled, adc.INTERFACE_crc_checksum})
+	Interface.Setregister([]byte{adc.INTERFACE_timeout_disabled, adc.INTERFACE_status_enabled, adc.INTERFACE_crc_checksum})
 
-	//This sets Mode0 to the default values. The default values for programming registers are defined in the ADS126x datasheet
+	//This sets Mode0 to the default values. The default values for programming registers are defined in the ADS126x datasheet and in the constants file
 	Mode0 := piadcs.NewRegister("Mode0", adc.MODE0_address)
 	Mode0.Setregister([]byte{adc.MODE0_default})
 
 	//This sets the ADC filter to sync4 mode (defined in the datasheet)
 	Mode1 := piadcs.NewRegister("Mode1", adc.MODE1_address)
-	Mode1.Setregister([]byte{adc.MODE1_filter_sinc4})
+	Mode1.Setregister([]byte{adc.MODE1_filter_sinc4, adc.MODE1_sbADC_ADC1, adc.MODE1_sbmag_none})
 
 	//This sets the gain to 1v/v and the data rate to 400 samples per second
 	Mode2 := piadcs.NewRegister("Mode2", adc.MODE2_address)
-	Mode2.Setregister([]byte{adc.MODE2_GAIN_1, adc.MODE2_DR_1200})
+	Mode2.Setregister([]byte{adc.MODE2_bypass_PGAenabled, adc.MODE2_GAIN_1, adc.MODE2_DR_1200})
 
 	//This creates a byte slice which we will use to write the values to the registers specified. It is critical that the values listed are in order and no register is skipped. If there is a register that you don't want to change the value of you still need to speficy it if it falls between two others that you want to change. You can use the built in default value for this as shown in this example with Mode0. See the ADS126x datasheet section 9.5.7 for an explanation of why this is the case
 	registerdata := []byte{Interface.Setvalue, Mode0.Setvalue, Mode1.Setvalue, Mode2.Setvalue}

@@ -66,7 +66,7 @@ func main() {
 	}
 
 	//This function resets the ADC
-	adc.InitSetup(startpin, pwdnpin)
+	adc.Restart(startpin, pwdnpin)
 
 	//See periph documentation
 	port, err := spireg.Open("")
@@ -82,10 +82,10 @@ func main() {
 
 	//The following sets the values that we want to write to the register. All register options are defined in the constants.go file. In this example we set the interface register such that the status byte is enabled and the checksum byte is enabled in checksum mode.
 	Power := piadcs.NewRegister("Power", adc.POWER_address)
-	Power.Setregister([]byte{adc.POWER_vbias_enabled})
+	Power.Setregister([]byte{adc.POWER_vbias_enabled, adc.POWER_intref_enabled})
 
 	Interface := piadcs.NewRegister("Interface", adc.INTERFACE_address)
-	Interface.Setregister([]byte{adc.INTERFACE_status_enabled, adc.INTERFACE_crc_checksum})
+	Interface.Setregister([]byte{adc.INTERFACE_timeout_disabled, adc.INTERFACE_status_enabled, adc.INTERFACE_crc_checksum})
 
 	//This sets Mode0 to the default values. The default values for programming registers are defined in the ADS126x datasheet
 	Mode0 := piadcs.NewRegister("Mode0", adc.MODE0_address)
@@ -93,11 +93,11 @@ func main() {
 
 	//This sets the ADC filter to sync4 mode (defined in the datasheet)
 	Mode1 := piadcs.NewRegister("Mode1", adc.MODE1_address)
-	Mode1.Setregister([]byte{adc.MODE1_filter_FIR})
+	Mode1.Setregister([]byte{adc.MODE1_filter_FIR, adc.MODE1_sbADC_ADC1, adc.MODE1_sbmag_none})
 
 	//This sets the gain to 1v/v and the data rate to 400 samples per second
 	Mode2 := piadcs.NewRegister("Mode2", adc.MODE2_address)
-	Mode2.Setregister([]byte{adc.MODE2_GAIN_1, adc.MODE2_DR_20})
+	Mode2.Setregister([]byte{adc.MODE2_bypass_PGAenabled, adc.MODE2_GAIN_1, adc.MODE2_DR_20})
 
 	Inpmux := piadcs.NewRegister("INPMUX", adc.INPMUX_address)
 	Inpmux.Setregister([]byte{adc.INPMUX_muxP_AIN9, adc.INPMUX_muxN_AINCOM})

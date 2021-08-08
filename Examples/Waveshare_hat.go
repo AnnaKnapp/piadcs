@@ -1,3 +1,4 @@
+//To test out this library with this product - https://www.waveshare.com/18983.htm - It works but is not ideal for precision measurement for many reasons - Primarily that the ADC is powered from the Raspberry Pi which adds a huge source of noise. Position of the Pi hat directly over the Pi's CPU also introduces major temperature gradients.
 package main
 
 import (
@@ -31,18 +32,6 @@ func closer(exiter chan os.Signal, dataFile *os.File) {
 }
 
 var empty []byte
-
-func startcommand(connection spi.Conn) {
-	if err := connection.Tx([]byte{adc.START1}, empty); err != nil {
-		log.Fatal("spi failed")
-	}
-}
-
-func stopcommand(connection spi.Conn) {
-	if err := connection.Tx([]byte{adc.STOP1}, empty); err != nil {
-		log.Fatal("spi failed")
-	}
-}
 
 //K-type thermocouple conversion polynomial constants
 //constants for converting Temp to Emf
@@ -139,7 +128,7 @@ func main() {
 
 	pwdnpin.Out(gpio.High)
 
-	stopcommand(spi0)
+	adc.Stopcommand(spi0)
 
 	time.Sleep(2 * time.Second)
 
@@ -186,7 +175,7 @@ func main() {
 
 		//fmt.Println(incomingregdata)
 
-		startcommand(spi0)
+		adc.Startcommand(spi0)
 
 		for n < 5 {
 			n = n + 1
@@ -216,7 +205,7 @@ func main() {
 		//fmt.Println("ambient")
 		//fmt.Println(ambient)
 
-		stopcommand(spi0)
+		adc.Stopcommand(spi0)
 
 		Mode2.Setvalue = 0
 		Mode2.Setregister([]byte{adc.MODE2_GAIN_32, adc.MODE2_DR_20})
@@ -233,7 +222,7 @@ func main() {
 		//these are used to keep track of how well the data is being transferred
 
 		//This starts the conversions on the ADS126x. It is critical that this is here otherwise there won't be any data coming in when we try to read
-		startcommand(spi0)
+		adc.Startcommand(spi0)
 
 		adcdata, err := adc.ContinuousReadCHK(spi0, drdypin)
 		if err == nil {
@@ -249,7 +238,7 @@ func main() {
 			fmt.Println("checksum fail")
 		}
 
-		stopcommand(spi0)
+		adc.Stopcommand(spi0)
 
 		Mode2.Setvalue = 0
 		Mode2.Setregister([]byte{adc.MODE2_GAIN_1, adc.MODE2_DR_20})
