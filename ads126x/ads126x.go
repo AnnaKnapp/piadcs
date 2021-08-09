@@ -61,7 +61,7 @@ func InitSetupNoStartPin(connection spi.Conn, start gpio.PinIO, pwdn gpio.PinIO)
 
 }
 
-//This function requires that the checksum be enabled in checksum mode and the status byte enabled. It reads the data in continuous mode - meaning that it waits for the data ready signal on the DRDY pin and then begins reading. The output is an unconverted 32 bit integer. If the checksum fails, SPI fails, or DRDY pin times out it will output an error and a value of zero.
+//ContinuousReadCHK This function requires that the checksum be enabled in checksum mode and the status byte enabled. It reads the data in continuous mode - meaning that it waits for the data ready signal on the DRDY pin and then begins reading. The output is an unconverted 32 bit integer. If the checksum fails, SPI fails, or DRDY pin times out it will output an error and a value of zero.
 func ContinuousReadCHK(connection spi.Conn, drdy gpio.PinIO) (int32, error) {
 
 	if drdy.WaitForEdge(-1) {

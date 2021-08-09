@@ -11,7 +11,7 @@ Libraries in Go to interface TI ADCs with Raspberry Pi. Currently only the ADS12
 go get -u github.com/AnnaKnapp/piadcs
 ```
 ## How to use
-Import the main library and the subfolder with the library for the adc you want to use (at this time on the ads126x is supported)
+Import the main library and the subfolder with the library for the adc you want to use (at this time only the ads126x is supported)
 
 ```go
 import(
@@ -22,5 +22,8 @@ import(
 
 Please check out the examples folder for usage examples. These examples are intended to run on a Raspberry Pi running Raspberry Pi OS and assume the connections shown in the schematics folder. The testing was done using a ProtoCentral ADS126x breakout board and a Raspberry Pi 4 B (other Pi models should also work). 
 
+These examples demonstrate how to use the functions provided by the library to change the ADC settings by writing to the registers, how to read conversion data, and how to store it as a .csv file.
+
 ## Documentation
 https://pkg.go.dev/github.com/AnnaKnapp/piadcs
+https://pkg.go.dev/github.com/AnnaKnapp/piadcs/ads126x

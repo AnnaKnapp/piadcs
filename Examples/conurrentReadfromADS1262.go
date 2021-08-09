@@ -1,3 +1,4 @@
+//This example reads the output of the ADC1 on the ADS126x. It takes advantage of Goroutines to seperate the receiving of ADC data and the conversion. If you dont want it to save the data in your current directory please make sure to change the filepath before running
 package main
 
 import (

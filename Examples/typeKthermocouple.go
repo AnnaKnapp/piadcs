@@ -1,3 +1,5 @@
+//This example uses the piadcs library to measure the temperature of a type K thermocouple and takes advantage of the ADS126x's onboard temperature sensor for cold-junction compensation. On the ADS1263 the ADC2 can also be used for this purpose if an appropriate temperature sensor is connected.
+
 package main
 
 import (
