@@ -127,11 +127,11 @@ const (
 	// Sensor Bias Magnitude (Selects the sensor bias current magnitude or the bias resistor)
 	MODE1_sbmag_none  byte = 0b00000000 //No sensor bias current or resistor (default)
 	MODE1_sbmag_500nA byte = 0b00000001 //0.5-µA sensor bias current
-	MODE1_sbmag_2µA   byte = 0b00000000 //2-µA sensor bias current
-	MODE1_sbmag_10µA  byte = 0b00000000 //10-µA sensor bias current
-	MODE1_sbmag_50µA  byte = 0b00000000 //50-µA sensor bias current
-	MODE1_sbmag_200µA byte = 0b00000000 //200-µA sensor bias current
-	MODE1_sbmag_10MΩ  byte = 0b00000000 //10-MΩ resistor
+	MODE1_sbmag_2µA   byte = 0b00000010 //2-µA sensor bias current
+	MODE1_sbmag_10µA  byte = 0b00000011 //10-µA sensor bias current
+	MODE1_sbmag_50µA  byte = 0b00000100 //50-µA sensor bias current
+	MODE1_sbmag_200µA byte = 0b00000101 //200-µA sensor bias current
+	MODE1_sbmag_10MΩ  byte = 0b00000110 //10-MΩ resistor
 )
 
 // The sixth register is Mode 2. It sets the PGA (programable gain amplifier) and the data rate
